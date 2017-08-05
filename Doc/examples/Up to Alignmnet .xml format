@@ -1,0 +1,31 @@
+python
+from Bio import SeqIO
+Aplano_33039 = SeqIO.read("/Users/NadiaBahadur/Desktop/Aplano_33039_Squalene_Synthase.fasta" , "fasta") 
+Aplano_33039 // Check if sequence is read
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
+from Bio.Alphabet import IUPAC  
+Aplano_33039_record = SeqRecord(Seq("MSKSKSSVSKKEVVKQGSYGKVIIHKDSLIRQLLRPSEVMAMIRCKMMKKNGKTTSGLAYGAESLGNSAEDIKFCEEKLAQVSRSFALVITFLPNSAEAPLRLGVAIFYLVLRALDTVEDDMNLEKFKPFVSPEEKCSGGKYLLRTKENLLRTFHERFDDQKRSKRVKISGLGEGHELELLDNYDIIVRVFETLPAAMREVICDITNEMGNGMADYVARDLRNGTVDDADFSKYCHIVAGTVGDGLTRLFAASGLESSDLVKKVNLWDSMGELLQRTNIIRDYLEDFEDGRAFWPESVWKVYTEKEDLGELRLSRFIDSGKSVACLNHMIADALELVPAVLEYLENIHEPSILSFCALPQVMAISTLGKCYNNKDVFTGVVKLRKGLSAKILLAFAPTNTPFTEDRLRASYKLWFLREVMDIQKTAKAIQKNDPTSSRVIASAEKIKTCLSR", IUPAC.protein), id="33039", name="33039_Aplano_Phytoene_Squalene_Synthase", description="Aplanochytrium kerguelense 33039 Squalene_Phytoene Synthase")
+Aplano_33039_record // Checked if sequence obtained its identifiers
+from Bio.Blast import NCBIWWW
+from Bio import SeqIO
+Aplano_33039_result = NCBIWWW.qblast("blastp", "nr", Aplano_33039_record.seq)
+save_file = open("33039_Aplano_Blast.xml", "w")
+save_file.write(Aplano_33039_result.read())
+save_file.close()
+Aplano_33039_result.close()
+Aplano_33039_record = open("33039_Aplano_Blast.xml")
+from Bio.Blast import NCBIXML
+Aplano_33039_blast_records = NCBIXML.parse(Aplano_33039_record)
+Aplano_33039_blast_record = Aplano_33039_blast_records.next()
+for alignment in Aplano_33039_blast_record.alignments:
+...     for hsp in alignment.hsps:
+...             if hsp.expect <0.01:
+...                     print('****Alignment****')
+...                     print('sequence:',alignment.title)
+...                     print('length:' , alignment.length)
+...                     print('score:', hsp.score)
+...                     print('e value:', hsp.expect)
+...                     print(hsp.query[0:90] + '...')
+...                     print(hsp.match[0:90] + '...')
+...                     print(hsp.sbjct[0:90] + '...') // click enter twice
